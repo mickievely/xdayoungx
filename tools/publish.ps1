@@ -10,18 +10,18 @@ if ($LASTEXITCODE -ne 0) {
     gh auth login -h github.com -p https -w
 }
 
-$repo = gh repo view xdayoungx/gokuvape --json url 2>$null
+$repoUrl = "https://github.com/mickievely/xdayoungx.git"
+gh repo view mickievely/xdayoungx --json url 2>$null
 if ($LASTEXITCODE -ne 0) {
-    gh repo create xdayoungx/gokuvape --public --source=. --remote=origin --description "xdayoungx Bedwars Vape (modular)"
+    gh repo create mickievely/xdayoungx --public --source=. --remote=origin --description "xdayoungx Bedwars Vape"
 } else {
-    git remote get-url origin 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        git remote add origin https://github.com/xdayoungx/gokuvape.git
-    }
+    git remote remove origin 2>$null
+    git remote add origin $repoUrl
 }
 
 git push -u origin main
 Write-Host ""
 Write-Host "Done!"
-Write-Host "Repo:  https://github.com/xdayoungx/gokuvape"
-Write-Host "Raw:   https://raw.githubusercontent.com/xdayoungx/gokuvape/main/gokuvape.lua"
+Write-Host "Repo:  https://github.com/mickievely/xdayoungx"
+Write-Host "Load:  https://raw.githubusercontent.com/mickievely/xdayoungx/main/load.lua"
+Write-Host "Entry: https://raw.githubusercontent.com/mickievely/xdayoungx/main/xdayoungx.lua"

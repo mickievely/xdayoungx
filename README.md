@@ -1,45 +1,48 @@
 # xdayoungx Vape
 
-Bedwars용 Vape 스크립트 — 모듈화 버전.
+Bedwars용 Vape — [mickievely/xdayoungx](https://github.com/mickievely/xdayoungx)
 
-- **GitHub:** https://github.com/xdayoungx/gokuvape
-- **Raw 진입점:** https://raw.githubusercontent.com/xdayoungx/gokuvape/main/gokuvape.lua
+- **GitHub:** https://github.com/mickievely/xdayoungx
+- **Raw 진입점:** https://raw.githubusercontent.com/mickievely/xdayoungx/main/xdayoungx.lua
 
-## 빠른 실행
-
-**원라인 (복붙용):**
+## 빠른 실행 (복붙)
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/xdayoungx/gokuvape/main/load.lua", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mickievely/xdayoungx/main/load.lua", true))()
 ```
 
-또는:
+## 자동 실행 (autoexec)
+
+첫 실행 후 `autoexec/xdayoungx.lua`가 자동 설치됩니다.  
+이후 게임 들어갈 때마다 자동 로드됩니다.
+
+수동 설치:
 
 ```lua
-shared.GokuVapeRepo = "https://raw.githubusercontent.com/xdayoungx/gokuvape/main"
-loadstring(game:HttpGet("https://raw.githubusercontent.com/xdayoungx/gokuvape/main/gokuvape.lua", true))()
+-- exploit workspace/autoexec/xdayoungx.lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mickievely/xdayoungx/main/load.lua", true))()
 ```
 
-로컬 파일:
+## 텔레포트 / 서버 이동
 
-```lua
-loadstring(readfile("gokuvape.lua"))()
-```
+- 다른 서버·로비·인게임 이동 시 **자동 재로드**
+- 설정·프로필 **자동 저장** (10초마다 + 텔레포트 전)
 
 ## 폴더 구조
 
 ```
-gokuvape.lua              # 진입점
-gokuvape/
-  core/bootstrap.lua        # 부트스트랩, 텔레포트, 자동 저장
-  core/download.lua         # 파일 로드 + 공용 라이브러리
-  guis/main.lua             # GUI
-  games/universal.lua       # 공통 모듈
-  games/bedwars.lua         # 배드워즈 인게임
-  games/lobby.lua           # 배드워즈 로비
-  libraries/                # hash, entity, bedwars API
-  loader.lua                # autoexec용
-  profiles/                 # 설정
+xdayoungx.lua             # 진입점
+load.lua                  # 원라인 로더
+gokuvape/                 # 내부 모듈 (경로명 유지)
+  core/bootstrap.lua
+  core/download.lua
+  guis/main.lua
+  games/universal.lua
+  games/bedwars.lua
+  games/lobby.lua
+  libraries/
+  loader.lua              # autoexec용
+  profiles/
 ```
 
 ## 수정할 파일
@@ -50,19 +53,16 @@ gokuvape/
 | Fly, ESP 등 | `gokuvape/games/universal.lua` |
 | 배드워즈 | `gokuvape/games/bedwars.lua` |
 | 로비 | `gokuvape/games/lobby.lua` |
-| Bedwars API | `gokuvape/libraries/bedwars/` |
 
-## 원격 자동 다운로드
+## 원격 설정
 
 `gokuvape/profiles/commit.txt`:
 
 ```
-https://raw.githubusercontent.com/xdayoungx/gokuvape/main
+https://raw.githubusercontent.com/mickievely/xdayoungx/main
 ```
 
-## GitHub 푸시 (최초 1회)
-
-터미널에서 GitHub 로그인 후:
+## GitHub 푸시
 
 ```powershell
 cd "c:\Users\a0107\Downloads\배드워즈"

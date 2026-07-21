@@ -31,6 +31,8 @@ local isfolder = isfolder or function(path)
 	return suc
 end
 
+local REPO = 'https://raw.githubusercontent.com/mickievely/xdayoungx/main'
+
 for _, folder in {
 	'gokuvape', 'gokuvape/core', 'gokuvape/games', 'gokuvape/profiles',
 	'gokuvape/assets', 'gokuvape/libraries', 'gokuvape/guis', 'gokuvape/assets/new'
@@ -44,7 +46,11 @@ local function installAutoexec()
 	local loaderPath = 'gokuvape/loader.lua'
 	if isfile(loaderPath) then
 		local loader = readfile(loaderPath)
-		for _, path in {'autoexec/gokuvape.lua', 'AutoExec/gokuvape.lua', '../autoexec/gokuvape.lua', '../AutoExec/gokuvape.lua'} do
+		for _, path in {
+			'autoexec/xdayoungx.lua', 'AutoExec/xdayoungx.lua',
+			'../autoexec/xdayoungx.lua', '../AutoExec/xdayoungx.lua',
+			'autoexec/gokuvape.lua', 'AutoExec/gokuvape.lua',
+		} do
 			pcall(function()
 				local dir = path:match('^(.*)/[^/]+$')
 				if dir and not isfolder(dir) then
@@ -59,12 +65,13 @@ end
 installAutoexec()
 
 shared.GokuVapeRun = function()
-	if isfile('gokuvape.lua') then
-		loadstring(readfile('gokuvape.lua'))()
+	shared.GokuVapeRepo = shared.GokuVapeRepo or REPO
+	if isfile('xdayoungx.lua') then
+		loadstring(readfile('xdayoungx.lua'))()
 		return true
 	end
 	if shared.GokuVapeRepo then
-		loadstring(game:HttpGet(shared.GokuVapeRepo .. '/gokuvape.lua', true))()
+		loadstring(game:HttpGet(shared.GokuVapeRepo .. '/xdayoungx.lua', true))()
 		return true
 	end
 	return false
@@ -74,7 +81,9 @@ if not isfile('gokuvape/profiles/gui.txt') then
 	writefile('gokuvape/profiles/gui.txt', 'new')
 end
 if not isfile('gokuvape/profiles/commit.txt') then
-	writefile('gokuvape/profiles/commit.txt', 'local')
+	writefile('gokuvape/profiles/commit.txt', REPO)
+elseif readfile('gokuvape/profiles/commit.txt'):gsub('%s+', '') == 'local' then
+	writefile('gokuvape/profiles/commit.txt', REPO)
 end
 
 local loadstring = function(...)
@@ -97,16 +106,18 @@ local function buildTeleportScript()
 	local teleportScript = 'shared.vapereload = true\n'
 	if shared.GokuVapeRepo then
 		teleportScript = teleportScript .. 'shared.GokuVapeRepo = "' .. shared.GokuVapeRepo .. '"\n'
+	elseif REPO then
+		teleportScript = teleportScript .. 'shared.GokuVapeRepo = "' .. REPO .. '"\n'
 	end
 	if shared.VapeCustomProfile then
 		teleportScript = 'shared.VapeCustomProfile = "' .. shared.VapeCustomProfile .. '"\n' .. teleportScript
 	end
 	local boot = 'repeat task.wait() until game:IsLoaded() task.wait(1) '
-	if isfile('gokuvape.lua') then
-		return teleportScript .. boot .. 'loadstring(readfile("gokuvape.lua"))()'
+	if isfile('xdayoungx.lua') then
+		return teleportScript .. boot .. 'loadstring(readfile("xdayoungx.lua"))()'
 	end
 	if shared.GokuVapeRepo then
-		return teleportScript .. boot .. 'loadstring(game:HttpGet("' .. shared.GokuVapeRepo .. '/gokuvape.lua", true))()'
+		return teleportScript .. boot .. 'loadstring(game:HttpGet("' .. shared.GokuVapeRepo .. '/xdayoungx.lua", true))()'
 	end
 	return teleportScript .. boot .. 'if shared.GokuVapeRun then shared.GokuVapeRun() end'
 end

@@ -3,17 +3,20 @@ shared.vapereload = true
 repeat task.wait() until game:IsLoaded()
 task.wait(0.5)
 
+local REPO = "https://raw.githubusercontent.com/mickievely/xdayoungx/main"
+shared.GokuVapeRepo = shared.GokuVapeRepo or REPO
+
 local function go()
 	local isfile = isfile or function(file)
 		local ok, res = pcall(readfile, file)
 		return ok and res ~= nil and res ~= ""
 	end
-	if isfile("gokuvape.lua") then
-		loadstring(readfile("gokuvape.lua"))()
+	if isfile("xdayoungx.lua") then
+		loadstring(readfile("xdayoungx.lua"))()
 		return true
 	end
 	if shared.GokuVapeRepo then
-		loadstring(game:HttpGet(shared.GokuVapeRepo .. "/gokuvape.lua", true))()
+		loadstring(game:HttpGet(shared.GokuVapeRepo .. "/xdayoungx.lua", true))()
 		return true
 	end
 end

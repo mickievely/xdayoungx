@@ -1,8 +1,9 @@
 if shared.vape then shared.vape:Uninject() end
 repeat task.wait() until game:IsLoaded()
 
--- xdayoungx | https://github.com/xdayoungx/gokuvape
-shared.GokuVapeRepo = shared.GokuVapeRepo or "https://raw.githubusercontent.com/xdayoungx/gokuvape/main"
+-- xdayoungx | https://github.com/mickievely/xdayoungx
+local REPO = "https://raw.githubusercontent.com/mickievely/xdayoungx/main"
+shared.GokuVapeRepo = shared.GokuVapeRepo or REPO
 
 local function loadLocal(path)
 	path = path:gsub("\\", "/")
@@ -15,7 +16,11 @@ local function loadLocal(path)
 			return game:HttpGet(url, true)
 		end)
 		if ok and res and res ~= "" and not res:find("404: Not Found", 1, true) then
-			if writefile then pcall(writefile, path, res) end
+			if writefile then
+				local folder = path:match("^(.*)/[^/]+$")
+				if folder and makefolder then pcall(makefolder, folder) end
+				pcall(writefile, path, res)
+			end
 			return res
 		end
 	end
