@@ -41,6 +41,13 @@ local textChatService = cloneref(game:GetService('TextChatService'))
 local contextService = cloneref(game:GetService('ContextActionService'))
 local coreGui = cloneref(game:GetService('CoreGui'))
 
+local rawSetFflag = setfflag
+local function setfflag(flag, value)
+	if typeof(rawSetFflag) == 'function' then
+		pcall(rawSetFflag, flag, value)
+	end
+end
+
 local isnetworkowner = identifyexecutor and table.find({'AWP', 'Nihon'}, ({identifyexecutor()})[1]) and isnetworkowner or function()
 	return true
 end
