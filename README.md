@@ -7,6 +7,14 @@ Bedwars용 Vape 스크립트 — 모듈화 버전.
 
 ## 빠른 실행
 
+**원라인 (복붙용):**
+
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xdayoungx/gokuvape/main/load.lua", true))()
+```
+
+또는:
+
 ```lua
 shared.GokuVapeRepo = "https://raw.githubusercontent.com/xdayoungx/gokuvape/main"
 loadstring(game:HttpGet("https://raw.githubusercontent.com/xdayoungx/gokuvape/main/gokuvape.lua", true))()
@@ -52,10 +60,11 @@ gokuvape/
 https://raw.githubusercontent.com/xdayoungx/gokuvape/main
 ```
 
-## 개발
+## GitHub 푸시 (최초 1회)
 
-원본 단일 파일에서 다시 분할:
+터미널에서 GitHub 로그인 후:
 
 ```powershell
-python tools/split_gokuvape.py
+cd "c:\Users\a0107\Downloads\배드워즈"
+powershell -ExecutionPolicy Bypass -File tools/publish.ps1
 ```
