@@ -5313,7 +5313,7 @@ function mainapi:Load(skipgui, profile)
 		guidata = loadJson('gokuvape/profiles/'..game.GameId..'.gui.txt')
 		if not guidata then
 			guidata = {Categories = {}}
-			self:CreateNotification('gokuvape', 'Failed to load GUI settings.', 10, 'alert')
+			self:CreateNotification('xdayoungx', 'Failed to load GUI settings.', 10, 'alert')
 			savecheck = false
 		end
 
@@ -5360,7 +5360,7 @@ function mainapi:Load(skipgui, profile)
 		local savedata = loadJson('gokuvape/profiles/'..self.Profile..self.Place..'.txt')
 		if not savedata then
 			savedata = {Categories = {}, Modules = {}, Legit = {}}
-			self:CreateNotification('gokuvape', 'Failed to load '..self.Profile..' profile.', 10, 'alert')
+			self:CreateNotification('xdayoungx', 'Failed to load '..self.Profile..' profile.', 10, 'alert')
 			savecheck = false
 		end
 
