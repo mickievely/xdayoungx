@@ -18,11 +18,11 @@ local function normalize(path)
 end
 
 local function getRepoBase()
-	if shared.GokuVapeRepo then
-		return shared.GokuVapeRepo:gsub('/+$', '')
+	if shared.XDayoungXRepo then
+		return shared.XDayoungXRepo:gsub('/+$', '')
 	end
-	if isfile('gokuvape/profiles/commit.txt') then
-		local commit = readfile('gokuvape/profiles/commit.txt'):gsub('%s+', '')
+	if isfile('xdayoungx/profiles/commit.txt') then
+		local commit = readfile('xdayoungx/profiles/commit.txt'):gsub('%s+', '')
 		if commit ~= '' and commit ~= 'local' then
 			if commit:find('^https?://') then
 				return commit:gsub('/+$', '')
@@ -63,8 +63,8 @@ function downloadFile(path, func)
 	error('Missing file: ' .. path)
 end
 
-local hash = loadstring(downloadFile('gokuvape/libraries/hash.lua'), 'hash')()
+local hash = loadstring(downloadFile('xdayoungx/libraries/hash.lua'), 'hash')()
 
-local prediction = loadstring(downloadFile('gokuvape/libraries/prediction.lua'), 'prediction')()
+local prediction = loadstring(downloadFile('xdayoungx/libraries/prediction.lua'), 'prediction')()
 
-entitylib = loadstring(downloadFile('gokuvape/libraries/entity.lua'), 'entitylibrary')()
+entitylib = loadstring(downloadFile('xdayoungx/libraries/entity.lua'), 'entitylibrary')()

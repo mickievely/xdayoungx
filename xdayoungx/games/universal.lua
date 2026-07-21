@@ -2,7 +2,7 @@ do
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err then
-		gokuLogError('loadstring', err)
+		xdayoungxLogError('loadstring', err)
 		if vape then
 			vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert')
 		end
@@ -18,7 +18,7 @@ end
 local run = function(func)
 	local ok, err = pcall(func)
 	if not ok then
-		gokuLogError('universal', err)
+		xdayoungxLogError('universal', err)
 	end
 end
 local queue_on_teleport = queue_on_teleport or function() end
@@ -64,7 +64,7 @@ local function addBlur(parent)
 	blur.Size = UDim2.new(1, 89, 1, 52)
 	blur.Position = UDim2.fromOffset(-48, -31)
 	blur.BackgroundTransparency = 1
-	blur.Image = getcustomasset('gokuvape/assets/new/blur.png')
+	blur.Image = getcustomasset('xdayoungx/assets/new/blur.png')
 	blur.ScaleType = Enum.ScaleType.Slice
 	blur.SliceCenter = Rect.new(52, 31, 261, 502)
 	blur.Parent = parent
@@ -167,10 +167,10 @@ local function serverHop(pointer, filter)
 				table.insert(attempted, v.id)
 
 				notif('Vape', 'Found! Teleporting.', 5)
-				if shared.gokuQueueTeleport then
-					shared.gokuQueueTeleport("shared.vapeserverhoplist = '"..table.concat(visited, '/').."'\nshared.vapeserverhopprevious = '"..game.JobId.."'")
+				if shared.xdayoungxQueueTeleport then
+					shared.xdayoungxQueueTeleport("shared.vapeserverhoplist = '"..table.concat(visited, '/').."'\nshared.vapeserverhopprevious = '"..game.JobId.."'")
 				else
-					queue_on_teleport("shared.vapereload = true\nshared.vapeserverhoplist = '"..table.concat(visited, '/').."'\nshared.vapeserverhopprevious = '"..game.JobId.."'\nloadstring(readfile('gokuvape/cache/source.lua'))()")
+					queue_on_teleport("shared.vapereload = true\nshared.vapeserverhoplist = '"..table.concat(visited, '/').."'\nshared.vapeserverhopprevious = '"..game.JobId.."'\nloadstring(readfile('xdayoungx/cache/source.lua'))()")
 				end
 				teleportService:TeleportToPlaceInstance(game.PlaceId, v.id)
 				return
@@ -218,9 +218,9 @@ local function motorMove(target, cf)
 	task.delay(0, part.Destroy, part)
 end
 
-local hash = loadstring(downloadFile('gokuvape/libraries/hash.lua'), 'hash')()
-local prediction = loadstring(downloadFile('gokuvape/libraries/prediction.lua'), 'prediction')()
-entitylib = loadstring(downloadFile('gokuvape/libraries/entity.lua'), 'entitylibrary')()
+local hash = loadstring(downloadFile('xdayoungx/libraries/hash.lua'), 'hash')()
+local prediction = loadstring(downloadFile('xdayoungx/libraries/prediction.lua'), 'prediction')()
+entitylib = loadstring(downloadFile('xdayoungx/libraries/entity.lua'), 'entitylibrary')()
 local whitelist = {
 	get = function() return 0, true end,
 	tag = function() return '' end,
@@ -3088,7 +3088,7 @@ run(function()
 		arrow.BackgroundTransparency = 1
 		arrow.BorderSizePixel = 0
 		arrow.Visible = false
-		arrow.Image = getcustomasset('gokuvape/assets/new/arrowmodule.png')
+		arrow.Image = getcustomasset('xdayoungx/assets/new/arrowmodule.png')
 		arrow.ImageColor3 = entitylib.getEntityColor(ent) or Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
 		arrow.Parent = Folder
 		Reference[ent] = arrow
@@ -4861,7 +4861,7 @@ run(function()
 	
 	Radar = vape:CreateOverlay({
 		Name = 'Radar',
-		Icon = getcustomasset('gokuvape/assets/new/radaricon.png'),
+		Icon = getcustomasset('xdayoungx/assets/new/radaricon.png'),
 		Size = UDim2.fromOffset(14, 14),
 		Position = UDim2.fromOffset(12, 13),
 		Function = function(callback)
@@ -5082,7 +5082,7 @@ run(function()
 	
 	SessionInfo = vape:CreateOverlay({
 		Name = 'Session Info',
-		Icon = getcustomasset('gokuvape/assets/new/textguiicon.png'),
+		Icon = getcustomasset('xdayoungx/assets/new/textguiicon.png'),
 		Size = UDim2.fromOffset(16, 12),
 		Position = UDim2.fromOffset(12, 14),
 		Function = function(callback)
@@ -5091,8 +5091,8 @@ run(function()
 				SessionInfo:Clean(playersService.LocalPlayer.OnTeleport:Connect(function()
 					if not teleportedServers then
 						teleportedServers = true
-						if shared.gokuQueueTeleport then
-							shared.gokuQueueTeleport("shared.vapesessioninfo = '"..httpService:JSONEncode(vape.Libraries.sessioninfo.Objects).."'")
+						if shared.xdayoungxQueueTeleport then
+							shared.xdayoungxQueueTeleport("shared.vapesessioninfo = '"..httpService:JSONEncode(vape.Libraries.sessioninfo.Objects).."'")
 						end
 					end
 				end))
@@ -5154,8 +5154,8 @@ run(function()
 	Hide = SessionInfo:CreateTextList({
 		Name = 'Blacklist',
 		Tooltip = 'Name of entry to hide.',
-		Icon = getcustomasset('gokuvape/assets/new/blockedicon.png'),
-		Tab = getcustomasset('gokuvape/assets/new/blockedtab.png'),
+		Icon = getcustomasset('xdayoungx/assets/new/blockedicon.png'),
+		Tab = getcustomasset('xdayoungx/assets/new/blockedtab.png'),
 		TabSize = UDim2.fromOffset(21, 16),
 		Color = Color3.fromRGB(250, 50, 56)
 	})
@@ -5919,8 +5919,8 @@ run(function()
 			if callback then
 				notif('Rejoin', 'Rejoining...', 5)
 				Rejoin:Toggle()
-				if shared.gokuQueueTeleport then
-					shared.gokuQueueTeleport()
+				if shared.xdayoungxQueueTeleport then
+					shared.xdayoungxQueueTeleport()
 				elseif vape then
 					vape:Save()
 				end

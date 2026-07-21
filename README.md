@@ -33,7 +33,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/mickievely/xdayoungx/
 ```
 xdayoungx.lua             # 진입점
 load.lua                  # 원라인 로더
-gokuvape/                 # 내부 모듈 (경로명 유지)
+xdayoungx/                 # 내부 모듈 (경로명 유지)
   core/bootstrap.lua
   core/download.lua
   guis/main.lua
@@ -49,14 +49,14 @@ gokuvape/                 # 내부 모듈 (경로명 유지)
 
 | 대상 | 파일 |
 |------|------|
-| GUI | `gokuvape/guis/main.lua` |
-| Fly, ESP 등 | `gokuvape/games/universal.lua` |
-| 배드워즈 | `gokuvape/games/bedwars.lua` |
-| 로비 | `gokuvape/games/lobby.lua` |
+| GUI | `xdayoungx/guis/main.lua` |
+| Fly, ESP 등 | `xdayoungx/games/universal.lua` |
+| 배드워즈 | `xdayoungx/games/bedwars.lua` |
+| 로비 | `xdayoungx/games/lobby.lua` |
 
 ## 원격 설정
 
-`gokuvape/profiles/commit.txt`:
+`xdayoungx/profiles/commit.txt`:
 
 ```
 https://raw.githubusercontent.com/mickievely/xdayoungx/main

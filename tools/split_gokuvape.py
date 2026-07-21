@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Split monolithic gokuvape (1).lua into modular gokuvape/ folder structure."""
+"""Split monolithic gokuvape (1).lua into modular xdayoungx/ folder structure."""
 
 from __future__ import annotations
 
@@ -20,11 +20,11 @@ def read_source() -> list[str]:
 def parse_embed_table(lines: list[str]) -> dict[str, str]:
     start = None
     for i, line in enumerate(lines):
-        if line.startswith("shared.GokuVapeEmbed"):
+        if line.startswith("shared.XDayoungXEmbed"):
             start = i + 1
             break
     if start is None:
-        raise RuntimeError("GokuVapeEmbed block not found")
+        raise RuntimeError("XDayoungXEmbed block not found")
 
     end = None
     for i in range(start, len(lines)):
@@ -34,7 +34,7 @@ def parse_embed_table(lines: list[str]) -> dict[str, str]:
                 end = i
                 break
     if end is None:
-        raise RuntimeError("GokuVapeEmbed closing brace not found")
+        raise RuntimeError("XDayoungXEmbed closing brace not found")
 
     section = "".join(lines[start:end])
     files: dict[str, str] = {}
@@ -89,25 +89,25 @@ def main() -> None:
 
     # Extract embedded library files
     for rel, content in embed_files.items():
-        if rel.startswith("gokuvape/"):
-            rel = rel[len("gokuvape/") :]
+        if rel.startswith("xdayoungx/"):
+            rel = rel[len("xdayoungx/") :]
         write_file(rel, content)
 
-    bootstrap = '''shared.GokuVapeErrors = shared.GokuVapeErrors or {}
-local function gokuLogError(source, err)
+    bootstrap = '''shared.XDayoungXErrors = shared.XDayoungXErrors or {}
+local function xdayoungxLogError(source, err)
 \tlocal msg = os.date('%X') .. ' | ' .. tostring(source) .. ' | ' .. tostring(err)
-\ttable.insert(shared.GokuVapeErrors, msg)
+\ttable.insert(shared.XDayoungXErrors, msg)
 \twarn('[gokuvape] ' .. msg)
 \tif setclipboard then
-\t\tpcall(setclipboard, table.concat(shared.GokuVapeErrors, '\\n'))
+\t\tpcall(setclipboard, table.concat(shared.XDayoungXErrors, '\\n'))
 \tend
 end
-shared.gokuLogError = gokuLogError
+shared.xdayoungxLogError = xdayoungxLogError
 
 pcall(function()
 \tlocal scriptContext = cloneref and cloneref(game:GetService('ScriptContext')) or game:GetService('ScriptContext')
 \tscriptContext.Error:Connect(function(msg, trace)
-\t\tgokuLogError('runtime', msg .. (trace and ('\\n' .. trace) or ''))
+\t\txdayoungxLogError('runtime', msg .. (trace and ('\\n' .. trace) or ''))
 \tend)
 end)
 
@@ -127,8 +127,8 @@ local isfolder = isfolder or function(path)
 end
 
 for _, folder in {
-\t'gokuvape', 'gokuvape/core', 'gokuvape/games', 'gokuvape/profiles',
-\t'gokuvape/assets', 'gokuvape/libraries', 'gokuvape/guis', 'gokuvape/assets/new'
+\t'gokuvape', 'xdayoungx/core', 'xdayoungx/games', 'xdayoungx/profiles',
+\t'xdayoungx/assets', 'xdayoungx/libraries', 'xdayoungx/guis', 'xdayoungx/assets/new'
 } do
 \tif not isfolder(folder) then
 \t\tpcall(makefolder, folder)
@@ -136,10 +136,10 @@ for _, folder in {
 end
 
 local function installAutoexec()
-\tlocal loaderPath = 'gokuvape/loader.lua'
+\tlocal loaderPath = 'xdayoungx/loader.lua'
 \tif isfile(loaderPath) then
 \t\tlocal loader = readfile(loaderPath)
-\t\tfor _, path in {'autoexec/gokuvape.lua', 'AutoExec/gokuvape.lua', '../autoexec/gokuvape.lua', '../AutoExec/gokuvape.lua'} do
+\t\tfor _, path in {'autoexec/xdayoungx.lua', 'AutoExec/xdayoungx.lua', '../autoexec/xdayoungx.lua', '../AutoExec/xdayoungx.lua'} do
 \t\t\tpcall(function()
 \t\t\t\tlocal dir = path:match('^(.*)/[^/]+$')
 \t\t\t\tif dir and not isfolder(dir) then
@@ -153,29 +153,29 @@ end
 
 installAutoexec()
 
-shared.GokuVapeRun = function()
+shared.XDayoungXRun = function()
 \tif isfile('gokuvape.lua') then
 \t\tloadstring(readfile('gokuvape.lua'))()
 \t\treturn true
 \tend
-\tif shared.GokuVapeRepo then
-\t\tloadstring(game:HttpGet(shared.GokuVapeRepo .. '/gokuvape.lua', true))()
+\tif shared.XDayoungXRepo then
+\t\tloadstring(game:HttpGet(shared.XDayoungXRepo .. '/gokuvape.lua', true))()
 \t\treturn true
 \tend
 \treturn false
 end
 
-if not isfile('gokuvape/profiles/gui.txt') then
-\twritefile('gokuvape/profiles/gui.txt', 'new')
+if not isfile('xdayoungx/profiles/gui.txt') then
+\twritefile('xdayoungx/profiles/gui.txt', 'new')
 end
-if not isfile('gokuvape/profiles/commit.txt') then
-\twritefile('gokuvape/profiles/commit.txt', 'local')
+if not isfile('xdayoungx/profiles/commit.txt') then
+\twritefile('xdayoungx/profiles/commit.txt', 'local')
 end
 
 local loadstring = function(...)
 \tlocal res, err = loadstring(...)
 \tif err then
-\t\tgokuLogError('loadstring', err)
+\t\txdayoungxLogError('loadstring', err)
 \t\tif shared.vape then
 \t\t\tshared.vape:CreateNotification('gokuvape', 'Failed to load : '..err, 30, 'alert')
 \t\tend
@@ -190,8 +190,8 @@ local playersService = cloneref(game:GetService('Players'))
 
 local function buildTeleportScript()
 \tlocal teleportScript = 'shared.vapereload = true\\n'
-\tif shared.GokuVapeRepo then
-\t\tteleportScript = teleportScript .. 'shared.GokuVapeRepo = "' .. shared.GokuVapeRepo .. '"\\n'
+\tif shared.XDayoungXRepo then
+\t\tteleportScript = teleportScript .. 'shared.XDayoungXRepo = "' .. shared.XDayoungXRepo .. '"\\n'
 \tend
 \tif shared.VapeCustomProfile then
 \t\tteleportScript = 'shared.VapeCustomProfile = "' .. shared.VapeCustomProfile .. '"\\n' .. teleportScript
@@ -200,13 +200,13 @@ local function buildTeleportScript()
 \tif isfile('gokuvape.lua') then
 \t\treturn teleportScript .. boot .. 'loadstring(readfile("gokuvape.lua"))()'
 \tend
-\tif shared.GokuVapeRepo then
-\t\treturn teleportScript .. boot .. 'loadstring(game:HttpGet("' .. shared.GokuVapeRepo .. '/gokuvape.lua", true))()'
+\tif shared.XDayoungXRepo then
+\t\treturn teleportScript .. boot .. 'loadstring(game:HttpGet("' .. shared.XDayoungXRepo .. '/gokuvape.lua", true))()'
 \tend
-\treturn teleportScript .. boot .. 'if shared.GokuVapeRun then shared.GokuVapeRun() end'
+\treturn teleportScript .. boot .. 'if shared.XDayoungXRun then shared.XDayoungXRun() end'
 end
 
-shared.gokuQueueTeleport = function(extra)
+shared.xdayoungxQueueTeleport = function(extra)
 \tif shared.vape then
 \t\tpcall(function()
 \t\t\tshared.vape:Save()
@@ -219,9 +219,9 @@ shared.gokuQueueTeleport = function(extra)
 \tqueue_on_teleport(script)
 end
 
-local function reloadGokuvape()
-\tif shared.GokuVapeReloading then return end
-\tshared.GokuVapeReloading = true
+local function reloadXDayoungX()
+\tif shared.XDayoungXReloading then return end
+\tshared.XDayoungXReloading = true
 \ttask.defer(function()
 \t\ttask.wait(1)
 \t\trepeat task.wait() until game:IsLoaded()
@@ -231,12 +231,12 @@ local function reloadGokuvape()
 \t\t\tend)
 \t\tend
 \t\tlocal ok, err = pcall(function()
-\t\t\tshared.GokuVapeRun()
+\t\t\tshared.XDayoungXRun()
 \t\tend)
 \t\tif not ok and err then
-\t\t\tgokuLogError('reload', err)
+\t\t\txdayoungxLogError('reload', err)
 \t\tend
-\t\tshared.GokuVapeReloading = nil
+\t\tshared.XDayoungXReloading = nil
 \tend)
 end
 
@@ -255,7 +255,7 @@ function finishLoading()
 \tvape:Clean(playersService.LocalPlayer.OnTeleport:Connect(function()
 \t\tif (not teleportedServers) and (not shared.VapeIndependent) then
 \t\t\tteleportedServers = true
-\t\t\tshared.gokuQueueTeleport()
+\t\t\tshared.xdayoungxQueueTeleport()
 \t\tend
 \tend))
 
@@ -265,7 +265,7 @@ function finishLoading()
 \t\tif game.PlaceId ~= lastPlaceId then
 \t\t\tlastPlaceId = game.PlaceId
 \t\t\tif not shared.VapeIndependent then
-\t\t\t\treloadGokuvape()
+\t\t\t\treloadXDayoungX()
 \t\t\tend
 \t\tend
 \tend))
@@ -274,7 +274,7 @@ function finishLoading()
 \t\t\tif game.JobId ~= lastJobId then
 \t\t\t\tlastJobId = game.JobId
 \t\t\t\tif not shared.VapeIndependent then
-\t\t\t\t\treloadGokuvape()
+\t\t\t\t\treloadXDayoungX()
 \t\t\t\tend
 \t\t\tend
 \t\t\ttask.wait(1)
@@ -293,7 +293,7 @@ end
 '''
     download_block = line_range_text(lines, 13062, 13138)
     download_block = download_block.replace(
-        "\tlocal embed = shared.GokuVapeEmbed and shared.GokuVapeEmbed[path]\n"
+        "\tlocal embed = shared.XDayoungXEmbed and shared.XDayoungXEmbed[path]\n"
         "\tif embed then\n"
         "\t\tif func then\n"
         "\t\t\treturn func(embed)\n"
@@ -318,16 +318,16 @@ end
 repeat task.wait() until game:IsLoaded()
 
 -- GitHub raw URL (예: https://raw.githubusercontent.com/USER/REPO/main)
--- exploit 실행 전: shared.GokuVapeRepo = "https://raw.githubusercontent.com/USER/REPO/main"
-shared.GokuVapeRepo = shared.GokuVapeRepo or nil
+-- exploit 실행 전: shared.XDayoungXRepo = "https://raw.githubusercontent.com/USER/REPO/main"
+shared.XDayoungXRepo = shared.XDayoungXRepo or nil
 
 local function loadLocal(path)
 \tpath = path:gsub("\\\\", "/")
 \tif isfile and isfile(path) then
 \t\treturn readfile(path)
 \tend
-\tif shared.GokuVapeRepo then
-\t\tlocal url = shared.GokuVapeRepo:gsub("/+$", "") .. "/" .. path
+\tif shared.XDayoungXRepo then
+\t\tlocal url = shared.XDayoungXRepo:gsub("/+$", "") .. "/" .. path
 \t\tlocal ok, res = pcall(function()
 \t\t\treturn game:HttpGet(url, true)
 \t\tend)
@@ -351,26 +351,26 @@ local function runFile(path)
 \treturn fn()
 end
 
-runFile("gokuvape/core/bootstrap.lua")
-runFile("gokuvape/core/download.lua")
+runFile("xdayoungx/core/bootstrap.lua")
+runFile("xdayoungx/core/download.lua")
 
 local loadOk, loadErr = pcall(function()
-\tvape = runFile("gokuvape/guis/main.lua")
+\tvape = runFile("xdayoungx/guis/main.lua")
 \tshared.vape = vape
 
-\trunFile("gokuvape/games/universal.lua")
+\trunFile("xdayoungx/games/universal.lua")
 
 \tlocal gameFileId = (game.GameId == 2619619496) and (game.PlaceId == 6872265039 and 6872265039 or 6872274481) or game.PlaceId
 \tif gameFileId == 6872274481 then
-\t\trunFile("gokuvape/games/bedwars.lua")
+\t\trunFile("xdayoungx/games/bedwars.lua")
 \telseif gameFileId == 6872265039 then
-\t\trunFile("gokuvape/games/lobby.lua")
+\t\trunFile("xdayoungx/games/lobby.lua")
 \tend
 end)
 
 if not loadOk then
-\tif shared.gokuLogError then
-\t\tshared.gokuLogError("load", loadErr)
+\tif shared.xdayoungxLogError then
+\t\tshared.xdayoungxLogError("load", loadErr)
 \telse
 \t\twarn("[gokuvape] load error:", loadErr)
 \tend
@@ -397,8 +397,8 @@ local function go()
 \t\tloadstring(readfile("gokuvape.lua"))()
 \t\treturn true
 \tend
-\tif shared.GokuVapeRepo then
-\t\tloadstring(game:HttpGet(shared.GokuVapeRepo .. "/gokuvape.lua", true))()
+\tif shared.XDayoungXRepo then
+\t\tloadstring(game:HttpGet(shared.XDayoungXRepo .. "/gokuvape.lua", true))()
 \t\treturn true
 \tend
 end

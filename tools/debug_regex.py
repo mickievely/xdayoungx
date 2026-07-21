@@ -1,8 +1,8 @@
 import re
 
 samples = [
-    "    ['gokuvape/libraries/bedwars/projectilemeta.lua'] = [=[local v18",
-    "    ['gokuvape/libraries/bedwars/promise.lua'] = [=[-- Decompiled",
+    "    ['xdayoungx/libraries/bedwars/projectilemeta.lua'] = [=[local v18",
+    "    ['xdayoungx/libraries/bedwars/promise.lua'] = [=[-- Decompiled",
 ]
 
 entry_re = re.compile(r"\['([^']+)'\]\s*=\s*(\[=*\[)")

@@ -1,9 +1,9 @@
--- gokuvape:lobby
+-- xdayoungx:lobby
 do
 local run = function(func)
 	local ok, err = pcall(func)
 	if not ok then
-		gokuLogError('lobby', err)
+		xdayoungxLogError('lobby', err)
 	end
 end
 local cloneref = cloneref or function(obj) return obj end
@@ -134,7 +134,7 @@ local function getAccountTier(player)
     return 0
 end
 
-getgenv().getGokuTier = function(player)
+getgenv().getXDayoungXTier = function(player)
     return getAccountTier(player)
 end
 

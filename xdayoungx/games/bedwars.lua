@@ -1,9 +1,9 @@
--- gokuvape:bedwars
+-- xdayoungx:bedwars
 do
 local run = function(func)
     local ok, err = pcall(func)
     if not ok then
-        gokuLogError('bedwars', err)
+        xdayoungxLogError('bedwars', err)
     end
 end
 local vapeEvents = setmetatable({}, {
@@ -71,14 +71,14 @@ if vape.CreateCategory then
 	if not vape.Categories.Kits then
 		vape:CreateCategory({
 			Name = 'Kits',
-			Icon = getcustomasset('gokuvape/assets/new/inventoryicon.png'),
+			Icon = getcustomasset('xdayoungx/assets/new/inventoryicon.png'),
 			Size = UDim2.fromOffset(15, 14)
 		})
 	end
 	if not vape.Categories.BoostFPS then
 		vape:CreateCategory({
 			Name = 'BoostFPS',
-			Icon = getcustomasset('gokuvape/assets/new/rendericon.png'),
+			Icon = getcustomasset('xdayoungx/assets/new/rendericon.png'),
 			Size = UDim2.fromOffset(15, 14)
 		})
 	end
@@ -163,7 +163,7 @@ local function addBlur(parent)
 	blur.Size = UDim2.new(1, 89, 1, 52)
 	blur.Position = UDim2.fromOffset(-48, -31)
 	blur.BackgroundTransparency = 1
-	blur.Image = getcustomasset('gokuvape/assets/new/blur.png')
+	blur.Image = getcustomasset('xdayoungx/assets/new/blur.png')
 	blur.ScaleType = Enum.ScaleType.Slice
 	blur.SliceCenter = Rect.new(52, 31, 261, 502)
 	blur.Parent = parent
@@ -2804,7 +2804,7 @@ run(function()
 
     local function createkitrender(plr)
         local icon = Instance.new("ImageLabel")
-        icon.Name = "gokuvapeKitRender" 
+        icon.Name = "xdayoungxKitRender" 
         icon.AnchorPoint = Vector2.new(1, 0.5)
         icon.BackgroundTransparency = 1
         icon.Position = UDim2.new(1.05, 0, 0.5, 0)
@@ -2836,7 +2836,7 @@ run(function()
         end
         
         for _, v in ipairs(PlayerGui:GetDescendants()) do
-            if v:IsA("ImageLabel") and v.Name == "gokuvapeKitRender" then  
+            if v:IsA("ImageLabel") and v.Name == "xdayoungxKitRender" then  
                 v:Destroy()
             end
         end
@@ -2901,7 +2901,7 @@ run(function()
             local card = container:FindFirstChild("1") and container["1"]:FindFirstChild("MatchDraftPlayerCard")
             if not card then return end
             
-            local icon = card:FindFirstChild("gokuvapeKitRender")  
+            local icon = card:FindFirstChild("xdayoungxKitRender")  
             if not icon then
                 icon = createkitrender(playerFound)
                 icon.Parent = card
@@ -2936,7 +2936,7 @@ run(function()
     local function createKitLabel(parent, kitImage)
         if kitLabels[parent] then kitLabels[parent]:Destroy() end
         local kitLabel = Instance.new("ImageLabel")
-        kitLabel.Name = "gokuvapeKitIcon"
+        kitLabel.Name = "xdayoungxKitIcon"
         kitLabel.Size = UDim2.new(1, 0, 1, 0)
         kitLabel.Position = UDim2.new(1.1, 0, 0, 0)
         kitLabel.BackgroundTransparency = 1
@@ -8395,7 +8395,7 @@ run(function()
                             newKitImage = res.renderImage
                         else
                             if not suc then
-                                warn(`[gokuvape MODULE ISSUE]: [Module - NameTags (Using bedwars.BedwarsKitMeta)] [Error]: {res}`)
+                                warn(`[xdayoungx MODULE ISSUE]: [Module - NameTags (Using bedwars.BedwarsKitMeta)] [Error]: {res}`)
                             end
                             newKitImage = kitImageIds[kit] or kitImageIds['none']
                         end
@@ -14081,7 +14081,7 @@ run(function()
 						Size = UDim2.new(1, 89, 1, 52),
 						Position = UDim2.fromOffset(-48, -31),
 						BackgroundTransparency = 1,
-						Image = getcustomasset('gokuvape/assets/new/blur.png'),
+						Image = getcustomasset('xdayoungx/assets/new/blur.png'),
 						ScaleType = Enum.ScaleType.Slice,
 						SliceCenter = Rect.new(52, 31, 261, 502)
 					}),
@@ -15990,7 +15990,7 @@ run(function()
 		close.Position = UDim2.new(1, -35, 0, 9)
 		close.BackgroundColor3 = Color3.new(1, 1, 1)
 		close.BackgroundTransparency = 1
-		close.Image = getcustomasset('gokuvape/assets/new/close.png')
+		close.Image = getcustomasset('xdayoungx/assets/new/close.png')
 		close.ImageColor3 = color.Light(uipallet.Text, 0.2)
 		close.ImageTransparency = 0.5
 		close.AutoButtonColor = false
@@ -16105,7 +16105,7 @@ run(function()
 		searchicon.Size = UDim2.fromOffset(14, 14)
 		searchicon.Position = UDim2.new(1, -26, 0, 8)
 		searchicon.BackgroundTransparency = 1
-		searchicon.Image = getcustomasset('gokuvape/assets/new/search.png')
+		searchicon.Image = getcustomasset('xdayoungx/assets/new/search.png')
 		searchicon.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		searchicon.Parent = searchbkg
 		local children = Instance.new('ScrollingFrame')
@@ -16246,7 +16246,7 @@ run(function()
 		textbuttonicon.Position = UDim2.fromScale(0.5, 0.5)
 		textbuttonicon.AnchorPoint = Vector2.new(0.5, 0.5)
 		textbuttonicon.BackgroundTransparency = 1
-		textbuttonicon.Image = getcustomasset('gokuvape/assets/new/add.png')
+		textbuttonicon.Image = getcustomasset('xdayoungx/assets/new/add.png')
 		textbuttonicon.ImageColor3 = Color3.fromHSV(0.46, 0.96, 0.52)
 		textbuttonicon.Parent = textbutton
 		local childrenlist = Instance.new('Frame')
@@ -16339,7 +16339,7 @@ run(function()
 			close.Position = UDim2.new(1, -23, 0, 6)
 			close.BackgroundColor3 = Color3.new(1, 1, 1)
 			close.BackgroundTransparency = 1
-			close.Image = getcustomasset('gokuvape/assets/new/closemini.png')
+			close.Image = getcustomasset('xdayoungx/assets/new/closemini.png')
 			close.ImageColor3 = color.Light(uipallet.Text, 0.2)
 			close.ImageTransparency = 0.5
 			close.AutoButtonColor = false
@@ -25777,7 +25777,7 @@ run(function()
         blur.Size = UDim2.new(1, 89, 1, 52)
         blur.Position = UDim2.fromOffset(-48, -31)
         blur.BackgroundTransparency = 1
-        blur.Image = getcustomasset('gokuvape/assets/new/blur.png')
+        blur.Image = getcustomasset('xdayoungx/assets/new/blur.png')
         blur.ScaleType = Enum.ScaleType.Slice
         blur.SliceCenter = Rect.new(52, 31, 261, 502)
         blur.Parent = parent
@@ -27398,7 +27398,7 @@ run(function()
 						bedwars.GlacialSkaterController:updateMomentum(100, "newValue")
 					end)
 					if not suc then
-						warn(`[gokuvape MODULE ISSUE]: [Module - InfKrystal (Starting to update Momentum)] [Error]: {res}`)
+						warn(`[xdayoungx MODULE ISSUE]: [Module - InfKrystal (Starting to update Momentum)] [Error]: {res}`)
 						runService:UnbindFromRenderStep('InfiniteKrystalMovement')
 					end
 				end)
@@ -27409,7 +27409,7 @@ run(function()
 					bedwars.GlacialSkaterController:updateMomentum(0, "newValue")
 				end)
 				if not suc then
-					warn(`[gokuvape MODULE ISSUE]: [Module - InfKrystal (Resetting updateMomentum function)] [Error]: {res}`)
+					warn(`[xdayoungx MODULE ISSUE]: [Module - InfKrystal (Resetting updateMomentum function)] [Error]: {res}`)
 				end
 			end
 		end
@@ -31035,7 +31035,7 @@ run(function()
 								sendMessage('Death', killer.DisplayName or killer.Name, 'skill issue | <obj>')
 							end
 						elseif killer == lplr and Toggles.Kill.Enabled then
-							sendMessage('Kill', killed.DisplayName or killed.Name, 'gokuvape on top | <obj>')
+							sendMessage('Kill', killed.DisplayName or killed.Name, 'xdayoungx on top | <obj>')
 						end
 					end
 				end))

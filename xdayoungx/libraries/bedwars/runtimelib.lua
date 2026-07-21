@@ -1,4 +1,4 @@
-local u1 = loadstring(downloadFile('gokuvape/libraries/bedwars/promise.lua'))()
+local u1 = loadstring(downloadFile('xdayoungx/libraries/bedwars/promise.lua'))()
 local u2 = game:GetService("RunService")
 local u11 = {
     ["Promise"] = u1,

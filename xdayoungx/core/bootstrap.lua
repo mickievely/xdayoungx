@@ -1,18 +1,18 @@
-shared.GokuVapeErrors = shared.GokuVapeErrors or {}
-local function gokuLogError(source, err)
+shared.XDayoungXErrors = shared.XDayoungXErrors or {}
+local function xdayoungxLogError(source, err)
 	local msg = os.date('%X') .. ' | ' .. tostring(source) .. ' | ' .. tostring(err)
-	table.insert(shared.GokuVapeErrors, msg)
+	table.insert(shared.XDayoungXErrors, msg)
 	warn('[xdayoungx] ' .. msg)
 	if setclipboard then
-		pcall(setclipboard, table.concat(shared.GokuVapeErrors, '\n'))
+		pcall(setclipboard, table.concat(shared.XDayoungXErrors, '\n'))
 	end
 end
-shared.gokuLogError = gokuLogError
+shared.xdayoungxLogError = xdayoungxLogError
 
 pcall(function()
 	local scriptContext = cloneref and cloneref(game:GetService('ScriptContext')) or game:GetService('ScriptContext')
 	scriptContext.Error:Connect(function(msg, trace)
-		gokuLogError('runtime', msg .. (trace and ('\n' .. trace) or ''))
+		xdayoungxLogError('runtime', msg .. (trace and ('\n' .. trace) or ''))
 	end)
 end)
 
@@ -34,8 +34,8 @@ end
 local REPO = 'https://raw.githubusercontent.com/mickievely/xdayoungx/main'
 
 for _, folder in {
-	'gokuvape', 'gokuvape/core', 'gokuvape/games', 'gokuvape/profiles',
-	'gokuvape/assets', 'gokuvape/libraries', 'gokuvape/guis', 'gokuvape/assets/new'
+	'xdayoungx', 'xdayoungx/core', 'xdayoungx/games', 'xdayoungx/profiles',
+	'xdayoungx/assets', 'xdayoungx/libraries', 'xdayoungx/guis', 'xdayoungx/assets/new'
 } do
 	if not isfolder(folder) then
 		pcall(makefolder, folder)
@@ -43,13 +43,13 @@ for _, folder in {
 end
 
 local function installAutoexec()
-	local loaderPath = 'gokuvape/loader.lua'
+	local loaderPath = 'xdayoungx/loader.lua'
 	if isfile(loaderPath) then
 		local loader = readfile(loaderPath)
 		for _, path in {
 			'autoexec/xdayoungx.lua', 'AutoExec/xdayoungx.lua',
 			'../autoexec/xdayoungx.lua', '../AutoExec/xdayoungx.lua',
-			'autoexec/gokuvape.lua', 'AutoExec/gokuvape.lua',
+			'autoexec/xdayoungx.lua', 'AutoExec/xdayoungx.lua',
 		} do
 			pcall(function()
 				local dir = path:match('^(.*)/[^/]+$')
@@ -64,32 +64,32 @@ end
 
 installAutoexec()
 
-shared.GokuVapeRun = function()
-	shared.GokuVapeRepo = shared.GokuVapeRepo or REPO
+shared.XDayoungXRun = function()
+	shared.XDayoungXRepo = shared.XDayoungXRepo or REPO
 	if isfile('xdayoungx.lua') then
 		loadstring(readfile('xdayoungx.lua'))()
 		return true
 	end
-	if shared.GokuVapeRepo then
-		loadstring(game:HttpGet(shared.GokuVapeRepo .. '/xdayoungx.lua', true))()
+	if shared.XDayoungXRepo then
+		loadstring(game:HttpGet(shared.XDayoungXRepo .. '/xdayoungx.lua', true))()
 		return true
 	end
 	return false
 end
 
-if not isfile('gokuvape/profiles/gui.txt') then
-	writefile('gokuvape/profiles/gui.txt', 'new')
+if not isfile('xdayoungx/profiles/gui.txt') then
+	writefile('xdayoungx/profiles/gui.txt', 'new')
 end
-if not isfile('gokuvape/profiles/commit.txt') then
-	writefile('gokuvape/profiles/commit.txt', REPO)
-elseif readfile('gokuvape/profiles/commit.txt'):gsub('%s+', '') == 'local' then
-	writefile('gokuvape/profiles/commit.txt', REPO)
+if not isfile('xdayoungx/profiles/commit.txt') then
+	writefile('xdayoungx/profiles/commit.txt', REPO)
+elseif readfile('xdayoungx/profiles/commit.txt'):gsub('%s+', '') == 'local' then
+	writefile('xdayoungx/profiles/commit.txt', REPO)
 end
 
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err then
-		gokuLogError('loadstring', err)
+		xdayoungxLogError('loadstring', err)
 		if shared.vape then
 			shared.vape:CreateNotification('xdayoungx', 'Failed to load : '..err, 30, 'alert')
 		end
@@ -104,10 +104,10 @@ local playersService = cloneref(game:GetService('Players'))
 
 local function buildTeleportScript()
 	local teleportScript = 'shared.vapereload = true\n'
-	if shared.GokuVapeRepo then
-		teleportScript = teleportScript .. 'shared.GokuVapeRepo = "' .. shared.GokuVapeRepo .. '"\n'
+	if shared.XDayoungXRepo then
+		teleportScript = teleportScript .. 'shared.XDayoungXRepo = "' .. shared.XDayoungXRepo .. '"\n'
 	elseif REPO then
-		teleportScript = teleportScript .. 'shared.GokuVapeRepo = "' .. REPO .. '"\n'
+		teleportScript = teleportScript .. 'shared.XDayoungXRepo = "' .. REPO .. '"\n'
 	end
 	if shared.VapeCustomProfile then
 		teleportScript = 'shared.VapeCustomProfile = "' .. shared.VapeCustomProfile .. '"\n' .. teleportScript
@@ -116,13 +116,13 @@ local function buildTeleportScript()
 	if isfile('xdayoungx.lua') then
 		return teleportScript .. boot .. 'loadstring(readfile("xdayoungx.lua"))()'
 	end
-	if shared.GokuVapeRepo then
-		return teleportScript .. boot .. 'loadstring(game:HttpGet("' .. shared.GokuVapeRepo .. '/xdayoungx.lua", true))()'
+	if shared.XDayoungXRepo then
+		return teleportScript .. boot .. 'loadstring(game:HttpGet("' .. shared.XDayoungXRepo .. '/xdayoungx.lua", true))()'
 	end
-	return teleportScript .. boot .. 'if shared.GokuVapeRun then shared.GokuVapeRun() end'
+	return teleportScript .. boot .. 'if shared.XDayoungXRun then shared.XDayoungXRun() end'
 end
 
-shared.gokuQueueTeleport = function(extra)
+shared.xdayoungxQueueTeleport = function(extra)
 	if shared.vape then
 		pcall(function()
 			shared.vape:Save()
@@ -135,9 +135,9 @@ shared.gokuQueueTeleport = function(extra)
 	queue_on_teleport(script)
 end
 
-local function reloadGokuvape()
-	if shared.GokuVapeReloading then return end
-	shared.GokuVapeReloading = true
+local function reloadXDayoungX()
+	if shared.XDayoungXReloading then return end
+	shared.XDayoungXReloading = true
 	task.defer(function()
 		task.wait(1)
 		repeat task.wait() until game:IsLoaded()
@@ -147,12 +147,12 @@ local function reloadGokuvape()
 			end)
 		end
 		local ok, err = pcall(function()
-			shared.GokuVapeRun()
+			shared.XDayoungXRun()
 		end)
 		if not ok and err then
-			gokuLogError('reload', err)
+			xdayoungxLogError('reload', err)
 		end
-		shared.GokuVapeReloading = nil
+		shared.XDayoungXReloading = nil
 	end)
 end
 
@@ -172,7 +172,7 @@ function finishLoading()
 	vape:Clean(playersService.LocalPlayer.OnTeleport:Connect(function()
 		if (not teleportedServers) and (not shared.VapeIndependent) then
 			teleportedServers = true
-			shared.gokuQueueTeleport()
+			shared.xdayoungxQueueTeleport()
 		end
 	end))
 
@@ -182,7 +182,7 @@ function finishLoading()
 		if game.PlaceId ~= lastPlaceId then
 			lastPlaceId = game.PlaceId
 			if not shared.VapeIndependent then
-				reloadGokuvape()
+				reloadXDayoungX()
 			end
 		end
 	end))
@@ -191,7 +191,7 @@ function finishLoading()
 			if game.JobId ~= lastJobId then
 				lastJobId = game.JobId
 				if not shared.VapeIndependent then
-					reloadGokuvape()
+					reloadXDayoungX()
 				end
 			end
 			task.wait(1)

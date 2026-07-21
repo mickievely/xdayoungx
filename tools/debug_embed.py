@@ -4,7 +4,7 @@ from pathlib import Path
 lines = Path(r"c:\Users\a0107\Downloads\배드워즈\gokuvape (1).lua").read_text(encoding="utf-8").splitlines(keepends=True)
 start = end = None
 for i, line in enumerate(lines):
-    if line.startswith("shared.GokuVapeEmbed"):
+    if line.startswith("shared.XDayoungXEmbed"):
         start = i + 1
     if start and line.strip() == "}" and "local isfile = isfile or function(file)" in "".join(lines[i + 1 : i + 4]):
         end = i

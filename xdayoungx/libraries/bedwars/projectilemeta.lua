@@ -1,5 +1,5 @@
-local v18 = loadstring(downloadFile('gokuvape/libraries/bedwars/sounds.lua'))()
-local damageType = loadstring(downloadFile('gokuvape/libraries/bedwars/damagetype.lua'))()
+local v18 = loadstring(downloadFile('xdayoungx/libraries/bedwars/sounds.lua'))()
+local damageType = loadstring(downloadFile('xdayoungx/libraries/bedwars/damagetype.lua'))()
 
 local u21 = {
     ["arrow"] = {

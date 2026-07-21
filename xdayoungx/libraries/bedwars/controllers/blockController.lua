@@ -1,5 +1,5 @@
-local Images = loadstring(downloadFile('gokuvape/libraries/bedwars/images.lua'))()
-local Client = loadstring(downloadFile('gokuvape/libraries/bedwars/client.lua'))()
+local Images = loadstring(downloadFile('xdayoungx/libraries/bedwars/images.lua'))()
+local Client = loadstring(downloadFile('xdayoungx/libraries/bedwars/client.lua'))()
 
 local blockController = {
     Name = 'BlockController'

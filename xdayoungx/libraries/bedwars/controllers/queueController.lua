@@ -1,4 +1,4 @@
-local Client = loadstring(downloadFile('gokuvape/libraries/bedwars/client.lua'))()
+local Client = loadstring(downloadFile('xdayoungx/libraries/bedwars/client.lua'))()
 
 local queueController = {
     Name = 'QueueController'
