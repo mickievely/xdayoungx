@@ -5509,8 +5509,9 @@ function mainapi:Save(newprofile)
 	}
 
 	for i, v in self.Categories do
+		if not v or not v.Object then continue end
 		(v.Type ~= 'Category' and i ~= 'Main' and savedata or guidata).Categories[i] = {
-			Enabled = i ~= 'Main' and v.Button.Enabled or nil,
+			Enabled = i ~= 'Main' and v.Button and v.Button.Enabled or nil,
 			Expanded = v.Type ~= 'Overlay' and v.Expanded or nil,
 			Pinned = v.Pinned,
 			Position = {X = v.Object.Position.X.Offset, Y = v.Object.Position.Y.Offset},
@@ -5564,7 +5565,7 @@ function mainapi:Uninject()
 		end
 	end
 	for _, v in self.Categories do
-		if v.Type == 'Overlay' and v.Button.Enabled then
+		if v.Type == 'Overlay' and v.Button and v.Button.Enabled then
 			v.Button:Toggle()
 		end
 	end
