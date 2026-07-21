@@ -4,21 +4,22 @@ repeat task.wait() until game:IsLoaded()
 task.wait(0.5)
 
 local REPO = "https://raw.githubusercontent.com/mickievely/xdayoungx/main"
-shared.XDayoungXRepo = shared.XDayoungXRepo or REPO
+shared.XDayoungXRepo = REPO
+shared.GokuVapeRepo = REPO
+
+local function del(path)
+	if isfile and isfile(path) and delfile then
+		pcall(delfile, path)
+	end
+end
+
+for _, path in {"gokuvape.lua", "xdayoungx.lua", "gokuvape/core/download.lua"} do
+	del(path)
+end
 
 local function go()
-	local isfile = isfile or function(file)
-		local ok, res = pcall(readfile, file)
-		return ok and res ~= nil and res ~= ""
-	end
-	if isfile("xdayoungx.lua") then
-		loadstring(readfile("xdayoungx.lua"))()
-		return true
-	end
-	if shared.XDayoungXRepo then
-		loadstring(game:HttpGet(shared.XDayoungXRepo .. "/xdayoungx.lua", true))()
-		return true
-	end
+	loadstring(game:HttpGet(REPO .. "/load.lua?t=" .. tostring(os.time()), true))()
+	return true
 end
 
 if not go() then

@@ -1,10 +1,15 @@
 if shared.vape then shared.vape:Uninject() end
 repeat task.wait() until game:IsLoaded()
 
--- xdayoungx | https://github.com/mickievely/xdayoungx
+-- xdayoungx v2 | https://github.com/mickievely/xdayoungx
 local REPO = "https://raw.githubusercontent.com/mickievely/xdayoungx/main"
 shared.XDayoungXRepo = shared.XDayoungXRepo or shared.GokuVapeRepo or REPO
 shared.GokuVapeRepo = shared.XDayoungXRepo
+
+local function normalizePath(path)
+	path = path:gsub("\\", "/")
+	return path:gsub("^gokuvape/", "xdayoungx/")
+end
 
 local function httpGet(url)
 	local ok, res = pcall(function()
@@ -38,11 +43,33 @@ local function httpGet(url)
 	return nil
 end
 
-local function loadLocal(path)
-	path = path:gsub("\\", "/")
+local function loadLocal(path, forceRemote)
+	path = normalizePath(path)
+	if shared.XDayoungXRepo and (forceRemote or not (isfile and isfile(path))) then
+		local url = shared.XDayoungXRepo:gsub("/+$", "") .. "/" .. path .. "?t=" .. tostring(os.time())
+		local res = httpGet(url)
+		if res then
+			if writefile then
+				local folder = path:match("^(.*)/[^/]+$")
+				if folder and makefolder then
+					pcall(makefolder, folder)
+				end
+				pcall(writefile, path, res)
+			end
+			return res
+		end
+	end
 	if isfile and isfile(path) then
 		local ok, src = pcall(readfile, path)
 		if ok and src and src ~= "" then
+			if src:find("gokuvape/", 1, true) and shared.XDayoungXRepo then
+				local url = shared.XDayoungXRepo:gsub("/+$", "") .. "/" .. path .. "?t=" .. tostring(os.time())
+				local res = httpGet(url)
+				if res then
+					pcall(writefile, path, res)
+					return res
+				end
+			end
 			return src
 		end
 	end
@@ -64,7 +91,8 @@ local function loadLocal(path)
 end
 
 local function runFile(path)
-	local src = loadLocal(path)
+	path = normalizePath(path)
+	local src = loadLocal(path, path:find("^xdayoungx/core/", 1, true) ~= nil)
 	if not src then
 		error("Missing file: " .. path)
 	end

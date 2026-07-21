@@ -14,7 +14,8 @@ local isfolder = isfolder or function(path)
 end
 
 local function normalize(path)
-	return path:gsub('\\', '/')
+	path = path:gsub('\\', '/')
+	return path:gsub('^gokuvape/', 'xdayoungx/')
 end
 
 local function getRepoBase()
