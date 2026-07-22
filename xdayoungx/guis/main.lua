@@ -2630,19 +2630,6 @@ function mainapi:CreateGUI()
 	back.Image = getcustomasset('xdayoungx/assets/new/back.png')
 	back.ImageColor3 = color.Light(uipallet.Main, 0.37)
 	back.Parent = settingspane
-	local settingsversion = Instance.new('TextLabel')
-	settingsversion.Name = 'Version'
-	settingsversion.Size = UDim2.new(1, 0, 0, 16)
-	settingsversion.Position = UDim2.new(0, 0, 1, -16)
-	settingsversion.BackgroundTransparency = 1
-	settingsversion.Text = 'xdayoungx '..mainapi.Version..' '..(
-		isfile('xdayoungx/profiles/commit.txt') and readfile('xdayoungx/profiles/commit.txt'):sub(1, 6) or ''
-	)..' '
-	settingsversion.TextColor3 = color.Dark(uipallet.Text, 0.43)
-	settingsversion.TextXAlignment = Enum.TextXAlignment.Right
-	settingsversion.TextSize = 10
-	settingsversion.FontFace = uipallet.Font
-	settingsversion.Parent = settingspane
 	addCorner(settingspane)
 	local settingschildren = Instance.new('Frame')
 	settingschildren.Name = 'Children'
@@ -5715,16 +5702,6 @@ clickgui.Size = UDim2.fromScale(1, 1)
 clickgui.BackgroundTransparency = 1
 clickgui.Visible = false
 clickgui.Parent = scaledgui
-local scarcitybanner = Instance.new('TextLabel')
-scarcitybanner.Size = UDim2.fromScale(1, 0.02)
-scarcitybanner.Position = UDim2.fromScale(0, 0.97)
-scarcitybanner.BackgroundTransparency = 1
-scarcitybanner.Text = 'xdayoungx loaded'
-scarcitybanner.TextScaled = true
-scarcitybanner.TextColor3 = Color3.new(1, 1, 1)
-scarcitybanner.TextStrokeTransparency = 0.5
-scarcitybanner.FontFace = uipallet.Font
-scarcitybanner.Parent = clickgui
 local modal = Instance.new('TextButton')
 modal.BackgroundTransparency = 1
 modal.Modal = true

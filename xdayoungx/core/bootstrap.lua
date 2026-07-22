@@ -216,14 +216,4 @@ function finishLoading()
 	end)
 
 	installAutoexec()
-
-	if not shared.vapereload then
-		if not vape.Categories then return end
-		local indicator = vape.Categories.Main
-			and vape.Categories.Main.Options
-			and vape.Categories.Main.Options['GUI bind indicator']
-		if indicator and indicator.Enabled then
-			vape:CreateNotification('xdayoungx', vape.VapeButton and 'Press the button in the top right to open GUI' or 'Press ' .. table.concat(vape.Keybind, ' + ') .. ' to open GUI', 5)
-		end
-	end
 end
