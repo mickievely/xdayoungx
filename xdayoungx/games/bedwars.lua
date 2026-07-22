@@ -68,6 +68,13 @@ if vape.Legit and not vape.Categories.Legit then
 end
 if vape.CreateCategory then
 	local getcustomasset = vape.Libraries.getcustomasset
+	if not vape.Categories.Inventory then
+		vape:CreateCategory({
+			Name = 'Inventory',
+			Icon = getcustomasset('xdayoungx/assets/new/inventoryicon.png'),
+			Size = UDim2.fromOffset(15, 14)
+		})
+	end
 	if not vape.Categories.Kits then
 		vape:CreateCategory({
 			Name = 'Kits',

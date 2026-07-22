@@ -99,10 +99,11 @@ local loadOk, loadErr = pcall(function()
 	shared.vape = vape
 	runFile("xdayoungx/games/universal.lua")
 	local gameFileId = (game.GameId == 2619619496) and (game.PlaceId == 6872265039 and 6872265039 or 6872274481) or game.PlaceId
-	if gameFileId == 6872274481 then
+	if game.GameId == 2619619496 then
 		runFile("xdayoungx/games/bedwars.lua")
-	elseif gameFileId == 6872265039 then
-		runFile("xdayoungx/games/lobby.lua")
+		if gameFileId == 6872265039 then
+			runFile("xdayoungx/games/lobby.lua")
+		end
 	end
 end)
 

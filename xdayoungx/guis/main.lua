@@ -335,6 +335,108 @@ local function loadJson(path)
 	return suc and type(res) == 'table' and res or nil
 end
 
+function mainapi:GetProfilePlace()
+	if game.GameId == 2619619496 then
+		return game.PlaceId == 6872265039 and 6872265039 or 6872274481
+	end
+	return game.PlaceId
+end
+
+function mainapi:GetProfileWritePath(profile)
+	profile = profile or self.Profile
+	return 'xdayoungx/profiles/' .. profile .. self:GetProfilePlace() .. '.txt'
+end
+
+function mainapi:GetProfileSavePath(profile)
+	profile = profile or self.Profile
+	local normalized = 'xdayoungx/profiles/' .. profile .. self:GetProfilePlace() .. '.txt'
+	if isfile(normalized) then
+		return normalized
+	end
+	local legacy = 'xdayoungx/profiles/' .. profile .. game.PlaceId .. '.txt'
+	if legacy ~= normalized and isfile(legacy) then
+		return legacy
+	end
+	return normalized
+end
+
+function mainapi:QueueSave()
+	if not self.Loaded then return end
+	if self.SaveQueued then return end
+	self.SaveQueued = true
+	task.delay(0.3, function()
+		self.SaveQueued = false
+		if self.Loaded then
+			self:Save()
+		end
+	end)
+end
+
+function mainapi:ApplyModuleSave(name, savetab, skipgui)
+	if not savetab then return end
+	local object = self.Modules[name]
+	if not object then
+		self.PendingModules = self.PendingModules or {}
+		self.PendingModules[name] = savetab
+		return
+	end
+	if object.Options and savetab.Options then
+		self:LoadOptions(object, savetab.Options)
+	end
+	if savetab.Enabled ~= object.Enabled then
+		if skipgui and self.ToggleNotifications.Enabled then
+			self:CreateNotification('Module Toggled', name .. "<font color='#FFFFFF'> has been </font>" .. (savetab.Enabled and "<font color='#5AFF5A'>Enabled</font>" or "<font color='#FF5A5A'>Disabled</font>") .. "<font color='#FFFFFF'>!</font>", 0.75)
+		end
+		object:Toggle(true)
+	end
+	if savetab.Bind then
+		object:SetBind(savetab.Bind)
+		if object.Object and object.Object:FindFirstChild('Bind') then
+			object.Object.Bind.Visible = savetab.Bind.Mobile or #savetab.Bind > 0
+		end
+	end
+end
+
+function mainapi:RestoreModulesFromProfile(skipgui)
+	if not self.Loaded then return end
+	local path = self:GetProfileSavePath()
+	if not isfile(path) then return end
+	local savedata = loadJson(path)
+	if not savedata or not savedata.Modules then return end
+	for name, savetab in savedata.Modules do
+		self:ApplyModuleSave(name, savetab, skipgui)
+	end
+	if self.PendingModules then
+		for name, savetab in self.PendingModules do
+			if self.Modules[name] then
+				self:ApplyModuleSave(name, savetab, skipgui)
+				self.PendingModules[name] = nil
+			end
+		end
+	end
+	self:UpdateTextGUI(true)
+end
+
+function mainapi:UpdateCategoryVisibility()
+	local moduleCounts = {}
+	for _, mod in self.Modules do
+		moduleCounts[mod.Category] = (moduleCounts[mod.Category] or 0) + 1
+	end
+
+	for name, cat in self.Categories do
+		if cat.Type ~= 'Category' or not cat.Button or not cat.Button.Object then continue end
+		local count = moduleCounts[name] or 0
+		cat.Button.Object.Visible = count > 0
+		if count == 0 then
+			if cat.Button.Enabled then
+				cat.Button:Toggle()
+			end
+			cat.Object.Visible = false
+			cat.Expanded = false
+		end
+	end
+end
+
 local function makeDraggable(gui, window)
 	gui.InputBegan:Connect(function(inputObj)
 		if window and not window.Visible then return end
@@ -3810,6 +3912,7 @@ function mainapi:CreateCategory(categorysettings)
 				mainapi:UpdateTextGUI()
 			end
 			task.spawn(modulesettings.Function, self.Enabled)
+			mainapi:QueueSave()
 		end
 
 		for i, v in components do
@@ -3930,6 +4033,13 @@ function mainapi:CreateCategory(categorysettings)
 
 		moduleapi.Object = modulebutton
 		mainapi.Modules[modulesettings.Name] = moduleapi
+		if mainapi.PendingModules and mainapi.PendingModules[modulesettings.Name] then
+			mainapi:ApplyModuleSave(modulesettings.Name, mainapi.PendingModules[modulesettings.Name], shared.vapereload)
+			mainapi.PendingModules[modulesettings.Name] = nil
+		end
+		if categoryapi.Button and categoryapi.Button.Object then
+			categoryapi.Button.Object.Visible = true
+		end
 
 		local sorting = {}
 		for _, v in mainapi.Modules do
@@ -5080,6 +5190,7 @@ function mainapi:CreateLegit()
 				table.clear(moduleapi.Connections)
 			end
 			task.spawn(modulesettings.Function, moduleapi.Enabled)
+			mainapi:QueueSave()
 		end
 
 		back.MouseEnter:Connect(function()
@@ -5356,8 +5467,10 @@ function mainapi:Load(skipgui, profile)
 		self.ProfileLabel.Size = UDim2.fromOffset(getfontsize(self.ProfileLabel.Text, self.ProfileLabel.TextSize, self.ProfileLabel.Font).X + 16, 24)
 	end
 
-	if isfile('xdayoungx/profiles/'..self.Profile..self.Place..'.txt') then
-		local savedata = loadJson('xdayoungx/profiles/'..self.Profile..self.Place..'.txt')
+	self.Place = self:GetProfilePlace()
+	local profilePath = self:GetProfileSavePath()
+	if isfile(profilePath) then
+		local savedata = loadJson(profilePath)
 		if not savedata then
 			savedata = {Categories = {}, Modules = {}, Legit = {}}
 			self:CreateNotification('xdayoungx', 'Failed to load '..self.Profile..' profile.', 10, 'alert')
@@ -5387,20 +5500,9 @@ function mainapi:Load(skipgui, profile)
 			object.Object.Position = UDim2.fromOffset(v.Position.X, v.Position.Y)
 		end
 
+		self.PendingModules = {}
 		for i, v in savedata.Modules do
-			local object = self.Modules[i]
-			if not object then continue end
-			if object.Options and v.Options then
-				self:LoadOptions(object, v.Options)
-			end
-			if v.Enabled ~= object.Enabled then
-				if skipgui then
-					if self.ToggleNotifications.Enabled then self:CreateNotification('Module Toggled', i.."<font color='#FFFFFF'> has been </font>"..(v.Enabled and "<font color='#5AFF5A'>Enabled</font>" or "<font color='#FF5A5A'>Disabled</font>").."<font color='#FFFFFF'>!</font>", 0.75) end
-				end
-				object:Toggle(true)
-			end
-			object:SetBind(v.Bind)
-			object.Object.Bind.Visible = #v.Bind > 0
+			self:ApplyModuleSave(i, v, skipgui)
 		end
 
 		for i, v in savedata.Legit do
@@ -5496,6 +5598,7 @@ end
 
 function mainapi:Save(newprofile)
 	if not self.Loaded then return end
+	self.Place = self:GetProfilePlace()
 	local guidata = {
 		Categories = {},
 		Profile = newprofile or self.Profile,
@@ -5538,7 +5641,7 @@ function mainapi:Save(newprofile)
 	end
 
 	writefile('xdayoungx/profiles/'..game.GameId..'.gui.txt', httpService:JSONEncode(guidata))
-	writefile('xdayoungx/profiles/'..self.Profile..self.Place..'.txt', httpService:JSONEncode(savedata))
+	writefile(self:GetProfileWritePath(newprofile), httpService:JSONEncode(savedata))
 end
 
 function mainapi:SaveOptions(object, savedoptions)

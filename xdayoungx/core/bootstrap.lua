@@ -161,12 +161,29 @@ function finishLoading()
 	if not vape then return end
 	vape.Init = nil
 	vape:Load()
+	task.defer(function()
+		task.wait()
+		if shared.vape and shared.vape.Loaded then
+			shared.vape:RestoreModulesFromProfile(shared.vapereload)
+			if shared.vape.UpdateCategoryVisibility then
+				shared.vape:UpdateCategoryVisibility()
+			end
+		end
+	end)
 	task.spawn(function()
 		repeat
 			vape:Save()
 			task.wait(10)
 		until not vape.Loaded
 	end)
+
+	vape:Clean(playersService.LocalPlayer:GetPropertyChangedSignal('Parent'):Connect(function()
+		if not playersService.LocalPlayer.Parent and shared.vape then
+			pcall(function()
+				shared.vape:Save()
+			end)
+		end
+	end))
 
 	local teleportedServers
 	vape:Clean(playersService.LocalPlayer.OnTeleport:Connect(function()

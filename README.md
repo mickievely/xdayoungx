@@ -66,5 +66,7 @@ https://raw.githubusercontent.com/mickievely/xdayoungx/main
 
 ```powershell
 cd "c:\Users\a0107\Downloads\배드워즈"
-powershell -ExecutionPolicy Bypass -File tools/publish.ps1
+git add -A
+git commit -m "your message"
+git push origin main
 ```
