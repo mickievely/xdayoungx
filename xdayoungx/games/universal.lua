@@ -42,10 +42,18 @@ local contextService = cloneref(game:GetService('ContextActionService'))
 local coreGui = cloneref(game:GetService('CoreGui'))
 
 local rawSetFflag = setfflag
-local function setfflag(flag, value)
-	if typeof(rawSetFflag) == 'function' then
-		pcall(rawSetFflag, flag, value)
+local function safeSetFflag(flag, value)
+	if typeof(rawSetFflag) ~= 'function' then
+		return false
 	end
+	return pcall(rawSetFflag, flag, value)
+end
+local setfflagSupported = safeSetFflag('PhysicsSenderMaxBandwidthBps', '0')
+local function setfflag(flag, value)
+	safeSetFflag(flag, value)
+end
+if getgenv then
+	getgenv().setfflag = setfflag
 end
 
 local isnetworkowner = identifyexecutor and table.find({'AWP', 'Nihon'}, ({identifyexecutor()})[1]) and isnetworkowner or function()
@@ -3047,6 +3055,13 @@ run(function()
 		Name = 'Timer',
 		Function = function(callback)
 			if callback then
+				if not setfflagSupported then
+					notif('Timer', 'setfflag not supported on this executor', 5, 'warning')
+					task.defer(function()
+						Timer:Toggle()
+					end)
+					return
+				end
 				setfflag('SimEnableStepPhysics', 'True')
 				setfflag('SimEnableStepPhysicsSelective', 'True')
 	
@@ -5734,6 +5749,13 @@ run(function()
 		Name = 'Blink',
 		Function = function(callback)
 			if callback then
+				if not setfflagSupported then
+					notif('Blink', 'setfflag not supported on this executor', 5, 'warning')
+					task.defer(function()
+						Blink:Toggle()
+					end)
+					return
+				end
 				local teleported
 				Blink:Clean(lplr.OnTeleport:Connect(function()
 					setfflag('PhysicsSenderMaxBandwidthBps', '38760')
@@ -5804,11 +5826,14 @@ run(function()
 			if callback then
 				if textChatService.ChatVersion == Enum.ChatVersion.TextChatService then
 					if Hide.Enabled and coreGui:FindFirstChild('ExperienceChat') then
-						ChatSpammer:Clean(coreGui.ExperienceChat:FindFirstChild('RCTScrollContentView', true).ChildAdded:Connect(function(msg)
-							if msg.Name:sub(1, 2) == '0-' and msg.ContentText == 'You must wait before sending another message.' then
-								msg.Visible = false
-							end
-						end))
+						local scroll = coreGui.ExperienceChat:FindFirstChild('RCTScrollContentView', true)
+						if scroll then
+							ChatSpammer:Clean(scroll.ChildAdded:Connect(function(msg)
+								if msg.Name:sub(1, 2) == '0-' and msg.ContentText == 'You must wait before sending another message.' then
+									msg.Visible = false
+								end
+							end))
+						end
 					end
 				elseif replicatedStorage:FindFirstChild('DefaultChatSystemChatEvents') then
 					if Hide.Enabled then
